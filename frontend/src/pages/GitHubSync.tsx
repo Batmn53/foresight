@@ -41,6 +41,19 @@ export const GitHubSync: React.FC = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    if (token) {
+      localStorage.setItem('foresight_token', token);
+      window.history.replaceState({}, document.title, window.location.pathname);
+      setSyncSuccessToast('Successfully authenticated with GitHub');
+      setTimeout(() => setSyncSuccessToast(null), 3000);
+    }
+    const err = params.get('error');
+    if (err) {
+      setError(`GitHub Auth Error: ${err}`);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
     fetchData();
   }, []);
 
@@ -187,8 +200,27 @@ export const GitHubSync: React.FC = () => {
             <span className="material-symbols-outlined text-xs">manage_history</span>
             <span>Trigger Full Re-Index</span>
           </button>
+          
           <button
             type="button"
+            onClick={async () => {
+              const url = window.prompt("Enter public GitHub repository URL (e.g. https://github.com/owner/repo), or leave blank to authenticate with GitHub:");
+              if (url) {
+                try {
+                  await githubApi.addPublicRepository(url);
+                  window.location.reload();
+                } catch (e: any) {
+                  alert(e.message || "Failed to add public repository");
+                }
+              } else if (url !== null) {
+                try {
+                  const { url: loginUrl } = await import('../services/api').then(m => m.authApi.getLoginUrl());
+                  window.location.href = loginUrl;
+                } catch (e: any) {
+                  alert("Failed to initiate login");
+                }
+              }
+            }}
             className="flex items-center gap-1 px-3 py-1.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-primary font-mono-label text-xs font-bold border border-primary/30 transition-colors"
           >
             <span className="material-symbols-outlined text-sm">add</span>

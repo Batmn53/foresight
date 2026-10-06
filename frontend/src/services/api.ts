@@ -1,27 +1,5 @@
 import axios from 'axios';
-import { MetricsOverview, Repository, TrendDataPoint } from '../types';
-import {
-  mockMetricsOverview,
-  mockRepositories,
-  mockTrendDataPoints,
-  mockBottleneckSummary,
-  mockStageBaselines,
-  mockGanttStages,
-  mockBottleneckTraces,
-  mockRiskSummary,
-  mockRiskHeuristics,
-  mockRiskPRs,
-  mockHotspots,
-  mockDimensionalSignals,
-  mockReleaseBlockers,
-  mockReleaseWarnings,
-  mockPositiveSignals,
-  mockCandidateTraces,
-  mockGitHubSyncSummary,
-  mockActiveSyncJob,
-  mockSyncRepos,
-  mockSyncAuditLogs,
-} from './mockData';
+import { MetricsOverview, Repository, TrendDataPoint, SyncRepoItem, GitHubSyncSummary } from '../types';
 
 const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 const baseURL = rawBaseUrl.endsWith('/api/v1')
@@ -33,204 +11,172 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 5000,
+  timeout: 10000,
 });
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('foresight_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export const authApi = {
+  getLoginUrl: async () => {
+    const res = await api.get('/auth/github/login');
+    return res.data;
+  },
+  callback: async (code: string) => {
+    const res = await api.get(`/auth/github/callback?code=${code}`);
+    return res.data;
+  },
+  getMe: async () => {
+    const res = await api.get('/auth/me');
+    return res.data;
+  }
+};
 
 export const metricsApi = {
   getOverview: async (repoId?: string, days = 30): Promise<MetricsOverview> => {
-    try {
-      const query = repoId ? `?repository_id=${repoId}&days=${days}` : `?days=${days}`;
-      const res = await api.get(`/metrics/overview${query}`);
-      return res.data;
-    } catch {
-      // Graceful fallback to isolated mock data if backend endpoint is not yet implemented
-      return mockMetricsOverview;
+    if (!repoId) {
+      throw new Error("Repository ID required");
     }
-  },
+    const [ttmRes, bfRes] = await Promise.all([
+      api.get(`/metrics/time-to-merge?repository_id=${repoId}&days=${days}`).catch(() => ({ data: { sample_size: 0, median_hours: 0 }})),
+      api.get(`/metrics/build-failures?repository_id=${repoId}&days=${days}`).catch(() => ({ data: { failure_rate_percentage: 0, successful_runs: 0, total_completed_runs: 0 }}))
+    ]);
 
-  getTimeToMerge: async (repoId: string, days = 30) => {
-    try {
-      const res = await api.get(`/metrics/time-to-merge?repository_id=${repoId}&days=${days}`);
-      return res.data;
-    } catch {
-      return {
-        repository_id: repoId,
-        time_window_days: days,
-        sample_size: 142,
-        average_hours: 21.2,
-        median_hours: 18.4,
-        p90_hours: 38.6,
-        disclaimer: 'Time-to-merge represents PR creation to merge interval, not developer working time.',
-      };
-    }
-  },
+    const ttm = ttmRes.data;
+    const bf = bfRes.data;
 
-  getBuildFailures: async (repoId: string, days = 30) => {
-    try {
-      const res = await api.get(`/metrics/build-failures?repository_id=${repoId}&days=${days}`);
-      return res.data;
-    } catch {
-      return {
-        repository_id: repoId,
-        time_window_days: days,
-        total_completed_runs: 1842,
-        successful_runs: 1753,
-        failed_runs: 89,
-        failure_rate_percentage: 4.8,
-        note: 'In-progress and cancelled workflows are excluded from failure calculations.',
-      };
+    let successRate = 0;
+    if (bf.total_completed_runs > 0) {
+      successRate = (bf.successful_runs / bf.total_completed_runs) * 100;
     }
+
+    return {
+      merged_prs: ttm.sample_size || 0,
+      open_prs: 0,
+      median_time_to_merge_hours: ttm.median_hours || 0,
+      build_failure_rate: bf.failure_rate_percentage || 0,
+      workflow_success_rate: Number(successRate.toFixed(1)),
+      release_readiness_score: 0,
+    };
   },
 
   getTrends: async (repoId?: string, days = 30): Promise<TrendDataPoint[]> => {
-    try {
-      const query = repoId ? `?repository_id=${repoId}&days=${days}` : `?days=${days}`;
-      const res = await api.get(`/metrics/trends${query}`);
-      return res.data?.data_points || res.data;
-    } catch {
-      return mockTrendDataPoints;
-    }
+    if (!repoId) return [];
+    const res = await api.get(`/metrics/trends?repository_id=${repoId}&days=${days}`);
+    return res.data?.data_points || res.data || [];
   },
 };
 
 export const bottlenecksApi = {
-  getSummary: async () => {
-    try {
-      const res = await api.get('/analytics/bottlenecks');
-      return res.data;
-    } catch {
-      return {
-        summary: mockBottleneckSummary,
-        baselines: mockStageBaselines,
-        ganttStages: mockGanttStages,
-      };
-    }
+  getSummary: async (repoId?: string) => {
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.get(`/bottlenecks/summary?repository_id=${repoId}`);
+    return res.data;
   },
-  getTraces: async () => {
-    try {
-      const res = await api.get('/analytics/bottlenecks/traces');
-      return res.data;
-    } catch {
-      return mockBottleneckTraces;
-    }
+  getTraces: async (repoId?: string) => {
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.get(`/bottlenecks/traces?repository_id=${repoId}`);
+    return res.data;
   },
 };
 
 export const riskApi = {
-  getSummary: async () => {
-    try {
-      const res = await api.get('/analytics/risk');
-      return res.data;
-    } catch {
-      return {
-        summary: mockRiskSummary,
-        heuristics: mockRiskHeuristics,
-      };
-    }
+  getSummary: async (repoId?: string) => {
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.get(`/risk/summary?repository_id=${repoId}`);
+    return res.data;
   },
-  getPRs: async () => {
-    try {
-      const res = await api.get('/analytics/risk/prs');
-      return res.data;
-    } catch {
-      return mockRiskPRs;
-    }
-  },
-  getHotspots: async () => {
-    try {
-      const res = await api.get('/analytics/risk/hotspots');
-      return res.data;
-    } catch {
-      return mockHotspots;
-    }
+  getRadar: async (repoId?: string) => {
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.get(`/risk/radar?repository_id=${repoId}`);
+    return res.data;
   },
 };
 
 export const releaseApi = {
-  getReadiness: async () => {
-    try {
-      const res = await api.get('/release/readiness');
-      return res.data;
-    } catch {
-      return {
-        score: 82,
-        status: 'READY WITH CAUTION',
-        directive: 'RECOMMENDATION: PROCEED WITH CAUTION',
-        dimensionalSignals: mockDimensionalSignals,
-        blockers: mockReleaseBlockers,
-        warnings: mockReleaseWarnings,
-        positiveSignals: mockPositiveSignals,
-        candidateTraces: mockCandidateTraces,
-      };
-    }
+  getReadiness: async (repoId?: string) => {
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.get(`/release/readiness?repository_id=${repoId}`);
+    return res.data;
   },
+};
+
+export const aiApi = {
+  getRisk: async (repoId?: string) => {
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.get(`/ai/risk?repository_id=${repoId}`);
+    return res.data;
+  },
+  getRelease: async (repoId?: string) => {
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.get(`/ai/release?repository_id=${repoId}`);
+    return res.data;
+  },
+  getBottlenecks: async (repoId?: string) => {
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.get(`/ai/bottlenecks?repository_id=${repoId}`);
+    return res.data;
+  },
+  getSummary: async (repoId?: string) => {
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.get(`/ai/summary?repository_id=${repoId}`);
+    return res.data;
+  }
 };
 
 export const githubApi = {
   getRepositories: async (): Promise<Repository[]> => {
-    try {
-      let res;
-      try {
-        res = await api.get('/github/repos');
-      } catch {
-        res = await api.get('/github/repositories');
-      }
-      if (Array.isArray(res.data) && res.data.length > 0) {
-        return res.data;
-      }
-      return mockRepositories;
-    } catch {
-      return mockRepositories;
-    }
+    const res = await api.get('/github/repositories');
+    return res.data;
   },
 
-  getSyncSummary: async () => {
-    try {
-      const res = await api.get('/github/sync/summary');
-      return res.data;
-    } catch {
-      return mockGitHubSyncSummary;
-    }
+  addPublicRepository: async (url: string) => {
+    const res = await api.post('/github/public-repo', { url });
+    return res.data;
+  },
+
+  getSyncSummary: async (): Promise<GitHubSyncSummary> => {
+    return {
+      active_repos: 0, paused_repos: 0, total_configured: 0, prs_ingested: 0, prs_today: 0,
+      review_threads_comments: '0', workflow_runs_parsed: '0', workflow_runs_today: '0',
+      parsing_drops: 0, webhook_health_rate: 0, p95_latency_ms: 0, request_rate_per_min: 0,
+      api_quota_used: 0, api_quota_total: 0
+    };
   },
 
   getActiveSyncJob: async () => {
-    try {
-      const res = await api.get('/github/sync/active');
-      return res.data;
-    } catch {
-      return mockActiveSyncJob;
-    }
+    return null;
   },
 
-  getSyncRepos: async () => {
-    try {
-      const res = await api.get('/github/sync/repos');
-      return res.data;
-    } catch {
-      return mockSyncRepos;
-    }
+  getSyncRepos: async (): Promise<SyncRepoItem[]> => {
+    const res = await api.get('/github/repositories');
+    return res.data.map((r: any) => ({
+      id: r.id,
+      name: r.name,
+      full_name: r.full_name,
+      tier: 'Tier-1',
+      description: '',
+      primary_branch: r.default_branch,
+      status: 'SYNCED',
+      last_synced: 'unknown',
+      volume_summary: '-',
+      webhook_status: 'Inactive'
+    }));
   },
 
   getAuditLogs: async () => {
-    try {
-      const res = await api.get('/github/sync/logs');
-      return res.data;
-    } catch {
-      return mockSyncAuditLogs;
-    }
+    return [];
   },
 
   triggerSync: async (repoId?: string) => {
-    try {
-      const res = await api.post('/github/sync', { repository_id: repoId });
-      return res.data;
-    } catch {
-      return {
-        status: 'SUCCESS',
-        message: 'Telemetry sync completed successfully (simulated fallback).',
-        timestamp: new Date().toISOString(),
-      };
-    }
+    if (!repoId) throw new Error("Repository ID required");
+    const res = await api.post('/github/sync', { repository_id: repoId, sync_type: 'FULL' });
+    return res.data;
   },
 };
 

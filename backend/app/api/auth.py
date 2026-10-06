@@ -25,7 +25,7 @@ async def github_login():
     return {"url": github_url}
 
 
-@router.get("/github/callback", response_model=TokenResponse, summary="GitHub OAuth callback")
+@router.get("/github/callback", summary="GitHub OAuth callback")
 async def github_callback(code: str, db: AsyncSession = Depends(get_db)):
     """Handle callback from GitHub OAuth with temporary authorization code."""
     try:
@@ -61,13 +61,13 @@ async def github_callback(code: str, db: AsyncSession = Depends(get_db)):
         # Create JWT token
         jwt_token = create_access_token(subject=str(user.id), extra_claims={"github_token": access_token})
         
-        return {"access_token": jwt_token, "token_type": "bearer"}
+        # Redirect back to frontend
+        frontend_url = settings.FRONTEND_URL or "http://localhost:5173"
+        return RedirectResponse(f"{frontend_url}/github?token={jwt_token}")
         
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"GitHub OAuth failed: {str(e)}"
-        )
+        frontend_url = settings.FRONTEND_URL or "http://localhost:5173"
+        return RedirectResponse(f"{frontend_url}/github?error={str(e)}")
 
 
 @router.get("/me", response_model=UserRead, summary="Current user profile")

@@ -29,3 +29,10 @@ async def get_bottleneck_summary(
     """Retrieve team-level bottleneck insights."""
     service = BottleneckService(db)
     return await service.get_bottleneck_summary(repository_id)
+
+@router.get("/traces", summary="Get bottleneck traces")
+async def get_bottleneck_traces(
+    repository_id: uuid.UUID = Query(..., description="Target repository ID"),
+):
+    """Retrieve traces for PR bottlenecks. (Stub)"""
+    return []
