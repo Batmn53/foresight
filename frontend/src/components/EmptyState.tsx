@@ -1,5 +1,4 @@
 import React from 'react';
-import { FolderGit2 } from 'lucide-react';
 
 interface EmptyStateProps {
   title?: string;
@@ -9,24 +8,28 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  title = 'No repository data available',
+  title = 'No telemetry data available',
   description = 'Connect your GitHub repository or trigger a sync to populate team delivery metrics.',
   actionLabel,
   onAction,
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center p-12 border border-dashed border-slate-800 rounded-xl text-center bg-slate-900/30">
-      <div className="p-3 bg-slate-800 rounded-full mb-3 text-slate-400">
-        <FolderGit2 className="h-8 w-8" />
+    <div className="flex flex-col items-center justify-center p-12 border border-dashed border-outline-variant/40 rounded bg-surface-container-low/40 text-center">
+      <div className="w-10 h-10 rounded bg-surface-container flex items-center justify-center mb-3 text-primary">
+        <span className="material-symbols-outlined text-xl">source_environment</span>
       </div>
-      <h3 className="text-base font-semibold text-slate-200">{title}</h3>
-      <p className="text-sm text-slate-400 max-w-sm mt-1 mb-5">{description}</p>
+      <h3 className="font-headline-md text-headline-md text-on-surface">{title}</h3>
+      <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm mt-1 mb-5">
+        {description}
+      </p>
       {actionLabel && onAction && (
         <button
+          type="button"
           onClick={onAction}
-          className="px-4 py-2 text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition"
+          className="flex items-center gap-1.5 px-space-sm py-1.5 rounded bg-primary text-on-primary font-body-sm text-body-sm font-semibold hover:bg-primary-container transition-all"
         >
-          {actionLabel}
+          <span className="material-symbols-outlined text-sm">sync_alt</span>
+          <span>{actionLabel}</span>
         </button>
       )}
     </div>
