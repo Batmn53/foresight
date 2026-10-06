@@ -8,6 +8,7 @@ from app.api.metrics import router as metrics_router
 from app.api.bottlenecks import router as bottlenecks_router
 from app.api.risk import router as risk_router
 from app.api.release import router as release_router
+from app.api.ai import router as ai_router
 
 api_router = APIRouter()
 
@@ -17,5 +18,6 @@ api_router.include_router(metrics_router, prefix="/metrics", tags=["metrics"])
 api_router.include_router(bottlenecks_router, prefix="/bottlenecks", tags=["bottlenecks"])
 api_router.include_router(risk_router, prefix="/risk", tags=["risk"])
 api_router.include_router(release_router, prefix="/release", tags=["release"])
+api_router.include_router(ai_router, prefix="/ai", tags=["ai"])
 
 __all__ = ["api_router"]

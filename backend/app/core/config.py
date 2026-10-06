@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     GITHUB_CLIENT_SECRET: str = ""
     GITHUB_REDIRECT_URI: str = "http://localhost:5173/github/callback"
     GITHUB_TOKEN: str = ""
+    # Grok AI
+    GROK_API_KEY: str = ""
 
     # CORS
     CORS_ORIGINS: List[str] = [

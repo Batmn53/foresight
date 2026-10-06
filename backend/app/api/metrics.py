@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_db
 from app.schemas import TimeToMergeMetric, BuildFailureRateMetric, MetricTrendsResponse
+from app.services.metrics_service import MetricsService
 
 router = APIRouter()
 
@@ -20,11 +21,8 @@ async def get_time_to_merge(
 
     Never reflects individual developer working time.
     """
-    # TODO: Invoke MetricsService.get_time_to_merge
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Time-to-merge metric calculation is not yet implemented.",
-    )
+    service = MetricsService(db)
+    return await service.get_time_to_merge(repository_id, days)
 
 
 @router.get("/build-failures", response_model=BuildFailureRateMetric, summary="Get CI build failure rate")
@@ -34,11 +32,8 @@ async def get_build_failures(
     db: AsyncSession = Depends(get_db),
 ):
     """Calculate CI workflow failure rate considering only completed runs."""
-    # TODO: Invoke MetricsService.get_build_failure_rate
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Build failure metric calculation is not yet implemented.",
-    )
+    service = MetricsService(db)
+    return await service.get_build_failure_rate(repository_id, days)
 
 
 @router.get("/trends", response_model=MetricTrendsResponse, summary="Get metric trend time-series")
@@ -48,8 +43,10 @@ async def get_trends(
     db: AsyncSession = Depends(get_db),
 ):
     """Fetch aggregated trend charts data for team dashboard."""
-    # TODO: Invoke MetricsService.get_trends
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Trends metric calculation is not yet implemented.",
+    service = MetricsService(db)
+    data = await service.get_trends(repository_id, days)
+    return MetricTrendsResponse(
+        repository_id=repository_id,
+        time_window_days=days,
+        data_points=data
     )
