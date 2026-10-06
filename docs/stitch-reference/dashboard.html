@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="web_dashboard" name="shell-type" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        @layer base {
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                overscroll-behavior: none;
+            }
+
+            main>:first-child {
+                margin-top: 0 !important;
+            }
+
+            main>:last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "tertiary": "#ffc174", "on-surface": "#dce3f1", "on-surface-variant": "#bdc8d1", "primary-fixed": "#c4e7ff", "surface-tint": "#7bd0ff", "primary-container": "#38bdf8", "tertiary-fixed-dim": "#ffb95f", "tertiary-container": "#f59e0b", "on-error-container": "#ffdad6", "on-primary-fixed-variant": "#004c69", "on-tertiary-fixed-variant": "#653e00", "surface-container": "#19202a", "surface-variant": "#2e3540", "inverse-on-surface": "#2a313c", "on-tertiary-container": "#613b00", "surface-container-high": "#232a35", "primary": "#8ed5ff", "on-tertiary-fixed": "#2a1700", "background": "#0d141e", "on-error": "#690005", "on-secondary": "#003824", "surface-container-low": "#151c26", "primary-fixed-dim": "#7bd0ff", "surface-dim": "#0d141e", "tertiary-fixed": "#ffddb8", "inverse-primary": "#00668a", "outline-variant": "#3e484f", "on-primary": "#00354a", "secondary": "#4edea3", "outline": "#87929a", "surface-bright": "#333a45", "surface": "#0d141e", "on-secondary-fixed-variant": "#005236", "on-secondary-fixed": "#002113", "surface-container-highest": "#2e3540", "on-background": "#dce3f1", "inverse-surface": "#dce3f1", "on-primary-fixed": "#001e2c", "secondary-fixed-dim": "#4edea3", "on-tertiary": "#472a00", "on-primary-container": "#004965", "surface-container-lowest": "#080f18", "error": "#ffb4ab", "error-container": "#93000a", "secondary-container": "#00a572", "on-secondary-container": "#00311f", "secondary-fixed": "#6ffbbe" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1rem", "space-xl": "1.5rem", "space-md": "0.75rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "gutter": "1rem", "margin": "1.25rem" }, "fontFamily": { "body-sm": ["Inter"], "body-lg": ["Inter"], "mono-body": ["JetBrains Mono"], "headline-lg": ["Geist"], "mono-metric": ["JetBrains Mono"], "headline-xl": ["Geist"], "mono-label": ["JetBrains Mono"], "headline-md": ["Geist"], "body-md": ["Inter"] }, "fontSize": { "body-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0", "fontWeight": "400" }], "body-lg": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "-0.01em", "fontWeight": "400" }], "mono-body": ["0.8125rem", { "lineHeight": "1.25rem", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-lg": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.02em", "fontWeight": "600" }], "mono-metric": ["1.75rem", { "lineHeight": "2rem", "letterSpacing": "-0.03em", "fontWeight": "700" }], "headline-xl": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.025em", "fontWeight": "600" }], "mono-label": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "500" }], "headline-md": ["1.125rem", { "lineHeight": "1.5rem", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "-0.005em", "fontWeight": "400" }] } } } };</script>
+</head>
+
+<body class="bg-background font-body-md text-on-surface antialiased">
+    <aside
+        class="fixed left-0 top-0 h-full w-64 bg-surface-container-lowest z-50 flex flex-col justify-between select-none shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
+        <div class="flex flex-col">
+            <div class="h-14 px-space-md flex items-center justify-between bg-surface-container-lowest">
+                <div class="flex items-center gap-space-sm">
+                    <div
+                        class="w-7 h-7 rounded bg-surface-container-highest flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-base">insights</span></div>
+                    <div class="flex flex-col"><span
+                            class="font-headline-md text-headline-md tracking-tight text-on-surface">ForgeSight</span>
+                    </div>
+                </div><span
+                    class="font-mono-label text-mono-label px-space-xs py-0.5 bg-surface-container text-outline rounded">v2.4-ent</span>
+            </div>
+            <div class="px-space-md py-space-sm"><span
+                    class="font-mono-label text-mono-label uppercase text-outline tracking-wider block mb-space-xs">Telemetry
+                    Diagnostics</span>
+                <nav class="flex flex-col gap-0.5"
+                    data-active-classes="bg-surface-container-high text-primary font-semibold"><a
+                        class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-sm text-body-sm"
+                        data-path="dashboard" href="#"><span
+                            class="material-symbols-outlined text-base">dashboard</span><span>Dashboard</span></a><a
+                        class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-sm text-body-sm"
+                        data-path="bottleneck-detective" href="#"><span
+                            class="material-symbols-outlined text-base">troubleshoot</span><span>Bottleneck
+                            Detective</span></a><a
+                        class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-sm text-body-sm"
+                        data-path="change-risk-radar" href="#"><span
+                            class="material-symbols-outlined text-base">radar</span><span>Change Risk Radar</span></a><a
+                        class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-sm text-body-sm"
+                        data-path="release-readiness" href="#"><span
+                            class="material-symbols-outlined text-base">verified</span><span>Release
+                            Readiness</span></a></nav>
+            </div>
+            <div class="px-space-md py-space-sm"><span
+                    class="font-mono-label text-mono-label uppercase text-outline tracking-wider block mb-space-xs">Workspace
+                    &amp; Ingestion</span>
+                <nav class="flex flex-col gap-0.5"
+                    data-active-classes="bg-surface-container-high text-primary font-semibold"><a
+                        class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-sm text-body-sm"
+                        data-path="repositories" href="#"><span
+                            class="material-symbols-outlined text-base">source_environment</span><span>Repositories</span></a><a
+                        class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-sm text-body-sm"
+                        data-path="github-sync" href="#"><span
+                            class="material-symbols-outlined text-base">sync_alt</span><span>GitHub Sync</span></a>
+                </nav>
+            </div>
+        </div>
+        <div class="flex flex-col p-space-md gap-space-sm bg-surface-container-lowest">
+            <nav class="flex flex-col gap-0.5"
+                data-active-classes="bg-surface-container-high text-primary font-semibold"><a
+                    class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-body-sm text-body-sm"
+                    data-path="settings" href="#"><span
+                        class="material-symbols-outlined text-base">tune</span><span>Settings</span></a></nav>
+            <div
+                class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low text-on-surface-variant">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary shrink-0"></span><span
+                    class="font-mono-label text-mono-label truncate">Prod Infra Cluster • US-East</span></div>
+            <div class="flex items-center gap-space-sm pt-space-xs">
+                <div
+                    class="w-8 h-8 rounded bg-surface-container flex items-center justify-center font-mono-label text-primary font-bold shrink-0">
+                    PR</div>
+                <div class="flex flex-col min-w-0 flex-1"><span
+                        class="font-body-sm text-body-sm font-semibold text-on-surface truncate leading-tight">Reliability
+                        Lead</span><span
+                        class="font-mono-label text-mono-label text-outline truncate leading-tight">Principal SRE</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <div class="pl-64">
+        <header
+            class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest/90 backdrop-blur-md z-40 flex items-center justify-between px-gutter shadow-[0_1px_8px_rgba(0,0,0,0.3)]">
+            <div class="flex items-center gap-space-md">
+                <div
+                    class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1 rounded hover:bg-surface-container cursor-pointer transition-colors">
+                    <span class="material-symbols-outlined text-base text-primary">account_tree</span><span
+                        class="font-mono-body text-mono-body font-medium text-on-surface">org/core-telemetry-service</span><span
+                        class="material-symbols-outlined text-sm text-outline">keyboard_arrow_down</span></div>
+                <div
+                    class="flex items-center gap-space-xs font-mono-label text-mono-label text-outline bg-surface-container-high px-space-xs py-0.5 rounded">
+                    <span class="material-symbols-outlined text-xs text-secondary">fork_right</span><span>main</span>
+                </div><span
+                    class="font-mono-label text-mono-label text-secondary bg-surface-container px-space-xs py-0.5 rounded">Tier-0
+                    Service</span>
+            </div>
+            <div class="flex items-center gap-space-md">
+                <div
+                    class="hidden xl:flex items-center gap-space-xs bg-surface-container-low px-space-xs py-0.5 rounded">
+                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span><span
+                        class="font-mono-label text-mono-label text-on-surface-variant">GH Ent: Connected (98.4%)</span>
+                </div>
+                <div class="flex items-center bg-surface-container-low rounded p-0.5 font-mono-label text-mono-label">
+                    <button
+                        class="px-2 py-1 rounded hover:text-on-surface text-outline transition-colors">7D</button><button
+                        class="px-2 py-1 rounded bg-surface-container-high text-primary font-semibold shadow-xs">14D</button><button
+                        class="px-2 py-1 rounded hover:text-on-surface text-outline transition-colors">30D</button><button
+                        class="px-2 py-1 rounded hover:text-on-surface text-outline transition-colors">Custom</button>
+                </div>
+                <div class="flex items-center gap-space-xs text-on-surface-variant font-mono-label text-mono-label">
+                    <span class="relative flex h-2 w-2"><span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span
+                            class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span
+                        class="hidden lg:inline">Synced 42s ago</span></div><button
+                    class="flex items-center gap-space-xs bg-surface-container hover:bg-surface-container-high text-on-surface px-space-sm py-1.5 rounded transition-colors font-body-sm text-body-sm"><span
+                        class="material-symbols-outlined text-base">refresh</span><span class="font-medium">Sync
+                        Now</span></button><img alt="Profile"
+                    class="w-8 h-8 rounded-full object-cover shrink-0 ml-space-xs"
+                    src="https://lh3.googleusercontent.com/aida/AEtjO1Ww05CWPrG_TMlhCfIGnJrbZf_cfZwRhARX7Ye2tZuWH50MKiA8LlMiT87FJGYyYIxnw2RyoC1JHnHC-_a_XEi17yJBydkpaBcLbaVT1zODGsCMkMx-1-K3Mb_ulN0R06iSmbBp5qO9kAwokn3X1wWKT7ayYzDbRYPx6P6mLthGatRyrSYm9X7hAGSlITudFgxWnbrlDGVuA2kdQ5fM_jzBgtWfbtJ6d9hcuv8smvu_iQANTfnaptgU4Xo" />
+            </div>
+        </header>
+        <main class="relative pt-14 w-full px-gutter min-h-screen bg-background">
+            <div class="flex flex-col w-full pb-space-xl">
+                <!-- DASHBOARD TOP HEADER & SCOPE BAR -->
+                <div
+                    class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md py-space-lg mb-space-lg">
+                    <div class="flex flex-col">
+                        <div class="flex items-center gap-space-sm mb-1">
+                            <span class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Engineering
+                                Command Center</span>
+                            <span
+                                class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-surface-container-high text-primary font-mono-label text-mono-label">
+                                <span class="material-symbols-outlined text-xs">monitoring</span> Live Telemetry
+                            </span>
+                        </div>
+                        <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+                            Aggregated team-level delivery velocity, review queue latencies, and CI/CD cluster
+                            resilience across base branches.
+                        </p>
+                    </div>
+                    <!-- Right Controls -->
+                    <div class="flex flex-wrap items-center gap-space-sm">
+                        <!-- Repo Selector Pill -->
+                        <div class="flex items-center bg-surface-container-low px-space-sm py-1.5 rounded gap-space-sm">
+                            <span class="material-symbols-outlined text-sm text-primary">source_environment</span>
+                            <span
+                                class="font-mono-body text-mono-body font-medium text-on-surface">org/core-telemetry-service</span>
+                            <span
+                                class="font-mono-label text-mono-label text-secondary bg-surface-container-high px-space-xs py-0.5 rounded">Tier-0
+                                Service</span>
+                            <span class="material-symbols-outlined text-sm text-outline">expand_more</span>
+                        </div>
+                        <!-- Time Window Segment -->
+                        <div
+                            class="flex items-center bg-surface-container-lowest p-1 rounded font-mono-label text-mono-label">
+                            <button
+                                class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors">7D</button>
+                            <button
+                                class="px-2.5 py-1 rounded bg-surface-container text-primary font-bold shadow-xs">30D</button>
+                            <button
+                                class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors">90D</button>
+                        </div>
+                        <!-- Live Webhook Pill -->
+                        <div
+                            class="hidden sm:flex items-center gap-1.5 px-space-sm py-1.5 bg-surface-container-lowest rounded font-mono-label text-mono-label">
+                            <span class="relative flex h-2 w-2">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+                            </span>
+                            <span class="text-on-surface-variant">Webhook: <span
+                                    class="text-secondary font-medium">Active</span></span>
+                            <span class="text-outline">·</span>
+                            <span class="text-outline">Synced 28s ago</span>
+                        </div>
+                        <!-- Sync Action -->
+                        <button
+                            class="flex items-center gap-1.5 px-space-sm py-1.5 rounded bg-primary text-on-primary font-body-sm text-body-sm font-semibold hover:bg-primary-container transition-all">
+                            <span class="material-symbols-outlined text-sm animate-spin"
+                                style="animation-duration: 4s;">autorenew</span>
+                            <span>Sync Now</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- PRIMARY METRIC TILES: 6 High-Density Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-space-md mb-space-xl">
+                    <!-- Tile 1: PRs Merged -->
+                    <div
+                        class="relative bg-surface-container-low p-space-md rounded flex flex-col justify-between group hover:bg-surface-container transition-colors shadow-sm">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-mono-label text-mono-label text-outline uppercase tracking-wider">PRs
+                                Merged</span>
+                            <div class="relative group/tip cursor-help">
+                                <span
+                                    class="material-symbols-outlined text-xs text-outline group-hover/tip:text-primary transition-colors">info</span>
+                                <div
+                                    class="absolute right-0 top-5 hidden group-hover/tip:flex z-30 w-52 p-space-xs bg-surface-container-highest text-on-surface rounded shadow-xl font-body-sm text-body-sm pointer-events-none">
+                                    Total pull requests merged into base branches within the selected time window.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline gap-space-xs my-0.5">
+                            <span class="font-mono-metric text-mono-metric text-on-surface">142</span>
+                            <span class="font-mono-body text-mono-body text-outline font-normal">PRs</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 pt-1 border-t border-surface-variant/40">
+                            <span
+                                class="inline-flex items-center font-mono-label text-mono-label px-1 py-0.5 rounded bg-secondary/15 text-secondary">
+                                <span class="material-symbols-outlined text-[11px] mr-0.5">trending_up</span>+12% vs 30d
+                            </span>
+                            <!-- Sparkline -->
+                            <svg class="w-14 h-4 text-secondary overflow-visible" fill="none" viewbox="0 0 56 16">
+                                <path d="M0 13 L8 12 L18 10 L28 11 L38 6 L46 8 L56 2" stroke="currentColor"
+                                    stroke-linecap="round" stroke-width="1.5"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Tile 2: Open PRs -->
+                    <div
+                        class="relative bg-surface-container-low p-space-md rounded flex flex-col justify-between group hover:bg-surface-container transition-colors shadow-sm">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-mono-label text-mono-label text-outline uppercase tracking-wider">Open
+                                PRs</span>
+                            <div class="relative group/tip cursor-help">
+                                <span
+                                    class="material-symbols-outlined text-xs text-outline group-hover/tip:text-primary transition-colors">info</span>
+                                <div
+                                    class="absolute right-0 top-5 hidden group-hover/tip:flex z-30 w-52 p-space-xs bg-surface-container-highest text-on-surface rounded shadow-xl font-body-sm text-body-sm pointer-events-none">
+                                    Currently open pull requests awaiting review, CI checks, or merge approval.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline gap-space-xs my-0.5">
+                            <span class="font-mono-metric text-mono-metric text-on-surface">28</span>
+                            <span class="font-mono-body text-mono-body text-outline font-normal">Active</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 pt-1 border-t border-surface-variant/40">
+                            <span
+                                class="inline-flex items-center font-mono-label text-mono-label px-1 py-0.5 rounded bg-primary/15 text-primary">
+                                <span class="material-symbols-outlined text-[11px] mr-0.5">trending_down</span>-4% vs
+                                30d
+                            </span>
+                            <svg class="w-14 h-4 text-primary overflow-visible" fill="none" viewbox="0 0 56 16">
+                                <path d="M0 4 L10 5 L20 8 L32 7 L42 12 L50 9 L56 13" stroke="currentColor"
+                                    stroke-linecap="round" stroke-width="1.5"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Tile 3: Median Time to Merge -->
+                    <div
+                        class="relative bg-surface-container-low p-space-md rounded flex flex-col justify-between group hover:bg-surface-container transition-colors shadow-sm">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-mono-label text-mono-label text-outline uppercase tracking-wider">Median
+                                Merge Time</span>
+                            <div class="relative group/tip cursor-help">
+                                <span
+                                    class="material-symbols-outlined text-xs text-outline group-hover/tip:text-tertiary transition-colors">info</span>
+                                <div
+                                    class="absolute right-0 top-5 hidden group-hover/tip:flex z-30 w-60 p-space-xs bg-surface-container-highest text-on-surface rounded shadow-xl font-body-sm text-body-sm pointer-events-none">
+                                    PR lifecycle time: Measured strictly from PR creation to merge completion. Reflects
+                                    team review and CI pipeline latency, NOT individual developer working time.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline gap-space-xs my-0.5">
+                            <span class="font-mono-metric text-mono-metric text-tertiary">18.4</span>
+                            <span class="font-mono-body text-mono-body text-outline font-normal">hrs</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 pt-1 border-t border-surface-variant/40">
+                            <span
+                                class="inline-flex items-center font-mono-label text-mono-label px-1 py-0.5 rounded bg-tertiary/15 text-tertiary">
+                                <span class="material-symbols-outlined text-[11px] mr-0.5">warning</span>+4.2h vs 30d
+                            </span>
+                            <svg class="w-14 h-4 text-tertiary overflow-visible" fill="none" viewbox="0 0 56 16">
+                                <path d="M0 12 L10 11 L22 13 L34 8 L44 5 L56 3" stroke="currentColor"
+                                    stroke-linecap="round" stroke-width="1.5"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Tile 4: Build Failure Rate -->
+                    <div
+                        class="relative bg-surface-container-low p-space-md rounded flex flex-col justify-between group hover:bg-surface-container transition-colors shadow-sm">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-mono-label text-mono-label text-outline uppercase tracking-wider">Build
+                                Failure Rate</span>
+                            <div class="relative group/tip cursor-help">
+                                <span
+                                    class="material-symbols-outlined text-xs text-outline group-hover/tip:text-primary transition-colors">info</span>
+                                <div
+                                    class="absolute right-0 top-5 hidden group-hover/tip:flex z-30 w-56 p-space-xs bg-surface-container-highest text-on-surface rounded shadow-xl font-body-sm text-body-sm pointer-events-none">
+                                    Percentage of CI build runs that terminated with non-zero exit code or build
+                                    failure.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline gap-space-xs my-0.5">
+                            <span class="font-mono-metric text-mono-metric text-on-surface">4.8%</span>
+                            <span class="font-mono-body text-mono-body text-outline font-normal">fail</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 pt-1 border-t border-surface-variant/40">
+                            <span
+                                class="inline-flex items-center font-mono-label text-mono-label px-1 py-0.5 rounded bg-secondary/15 text-secondary">
+                                <span class="material-symbols-outlined text-[11px] mr-0.5">arrow_downward</span>-1.1% vs
+                                30d
+                            </span>
+                            <svg class="w-14 h-4 text-secondary overflow-visible" fill="none" viewbox="0 0 56 16">
+                                <path d="M0 5 L12 6 L24 8 L36 9 L46 11 L56 13" stroke="currentColor"
+                                    stroke-linecap="round" stroke-width="1.5"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Tile 5: Workflow Success Rate -->
+                    <div
+                        class="relative bg-surface-container-low p-space-md rounded flex flex-col justify-between group hover:bg-surface-container transition-colors shadow-sm">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-mono-label text-mono-label text-outline uppercase tracking-wider">Workflow
+                                Success</span>
+                            <div class="relative group/tip cursor-help">
+                                <span
+                                    class="material-symbols-outlined text-xs text-outline group-hover/tip:text-primary transition-colors">info</span>
+                                <div
+                                    class="absolute right-0 top-5 hidden group-hover/tip:flex z-30 w-56 p-space-xs bg-surface-container-highest text-on-surface rounded shadow-xl font-body-sm text-body-sm pointer-events-none">
+                                    Overall workflow execution success across all automated integration and deploy runs.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline gap-space-xs my-0.5">
+                            <span class="font-mono-metric text-mono-metric text-secondary">95.2%</span>
+                            <span class="font-mono-body text-mono-body text-outline font-normal">pass</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 pt-1 border-t border-surface-variant/40">
+                            <span
+                                class="inline-flex items-center font-mono-label text-mono-label px-1 py-0.5 rounded bg-secondary/15 text-secondary">
+                                <span class="material-symbols-outlined text-[11px] mr-0.5">arrow_upward</span>+1.1% vs
+                                30d
+                            </span>
+                            <svg class="w-14 h-4 text-secondary overflow-visible" fill="none" viewbox="0 0 56 16">
+                                <path d="M0 12 L14 10 L24 9 L34 7 L44 5 L56 3" stroke="currentColor"
+                                    stroke-linecap="round" stroke-width="1.5"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Tile 6: Release Readiness -->
+                    <div
+                        class="relative bg-surface-container-low p-space-md rounded flex flex-col justify-between group hover:bg-surface-container transition-colors shadow-sm">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-mono-label text-mono-label text-outline uppercase tracking-wider">Release
+                                Readiness</span>
+                            <div class="relative group/tip cursor-help">
+                                <span
+                                    class="material-symbols-outlined text-xs text-outline group-hover/tip:text-primary transition-colors">info</span>
+                                <div
+                                    class="absolute right-0 top-5 hidden group-hover/tip:flex z-30 w-60 p-space-xs bg-surface-container-highest text-on-surface rounded shadow-xl font-body-sm text-body-sm pointer-events-none">
+                                    Composite index evaluating automated test passes, schema verification, and open
+                                    blocking bugs.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline gap-space-xs my-0.5">
+                            <span class="font-mono-metric text-mono-metric text-primary">92%</span>
+                            <span
+                                class="font-mono-label text-mono-label text-secondary bg-secondary/15 px-1 py-0.5 rounded font-bold">READY</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 pt-1 border-t border-surface-variant/40">
+                            <span
+                                class="inline-flex items-center font-mono-label text-mono-label px-1 py-0.5 rounded bg-surface-container text-outline">
+                                <span class="material-symbols-outlined text-[11px] mr-0.5">horizontal_rule</span>Stable
+                                (+0%)
+                            </span>
+                            <svg class="w-14 h-4 text-primary overflow-visible" fill="none" viewbox="0 0 56 16">
+                                <path d="M0 7 L12 7 L24 6 L36 8 L46 6 L56 6" stroke="currentColor"
+                                    stroke-linecap="round" stroke-width="1.5"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <!-- MAIN TELEMETRY CHARTS 2x2 GRID -->
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-space-lg mb-space-xl">
+                    <!-- CHART 1: PR Throughput (Area/Line) -->
+                    <div class="bg-surface-container-low p-space-lg rounded flex flex-col justify-between shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+                            <div>
+                                <h2
+                                    class="font-headline-md text-headline-md text-on-surface flex items-center gap-space-xs">
+                                    <span class="material-symbols-outlined text-primary text-base">call_split</span>
+                                    Pull Request Throughput
+                                </h2>
+                                <span class="font-body-sm text-body-sm text-on-surface-variant">Volume of pull requests
+                                    opened vs. merged over 30 days</span>
+                            </div>
+                            <div class="flex items-center gap-space-md font-mono-label text-mono-label">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2.5 h-0.5 bg-primary rounded"></span>
+                                    <span class="text-on-surface">PRs Opened</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2.5 h-0.5 bg-secondary rounded"></span>
+                                    <span class="text-on-surface">PRs Merged</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Chart Canvas SVG -->
+                        <div
+                            class="w-full h-64 bg-surface-container-lowest/60 rounded p-space-sm flex flex-col justify-between relative overflow-hidden">
+                            <!-- Background Grid Lines -->
+                            <div
+                                class="absolute inset-x-space-sm top-8 bottom-8 flex flex-col justify-between pointer-events-none opacity-20">
+                                <div class="border-b border-outline w-full"></div>
+                                <div class="border-b border-outline w-full"></div>
+                                <div class="border-b border-outline w-full"></div>
+                                <div class="border-b border-outline w-full"></div>
+                            </div>
+                            <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 600 200">
+                                <defs>
+                                    <lineargradient id="primaryGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#8ed5ff" stop-opacity="0.25"></stop>
+                                        <stop offset="100%" stop-color="#8ed5ff" stop-opacity="0.0"></stop>
+                                    </lineargradient>
+                                    <lineargradient id="secondaryGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#4edea3" stop-opacity="0.25"></stop>
+                                        <stop offset="100%" stop-color="#4edea3" stop-opacity="0.0"></stop>
+                                    </lineargradient>
+                                </defs>
+                                <!-- Merged Area & Line -->
+                                <polygon fill="url(#secondaryGrad)"
+                                    points="0,170 50,150 100,140 150,155 200,120 250,110 300,130 350,90 400,85 450,100 500,60 550,55 600,40 600,190 0,190">
+                                </polygon>
+                                <polyline fill="none"
+                                    points="0,170 50,150 100,140 150,155 200,120 250,110 300,130 350,90 400,85 450,100 500,60 550,55 600,40"
+                                    stroke="#4edea3" stroke-linecap="round" stroke-width="2.5"></polyline>
+                                <!-- Opened Area & Line -->
+                                <polygon fill="url(#primaryGrad)"
+                                    points="0,150 50,140 100,120 150,130 200,90 250,95 300,110 350,80 400,75 450,70 500,50 550,45 600,30 600,190 0,190">
+                                </polygon>
+                                <polyline fill="none"
+                                    points="0,150 50,140 100,120 150,130 200,90 250,95 300,110 350,80 400,75 450,70 500,50 550,45 600,30"
+                                    stroke="#8ed5ff" stroke-dasharray="4 2" stroke-linecap="round" stroke-width="2">
+                                </polyline>
+                                <!-- Key marker overlay point -->
+                                <circle cx="500" cy="60" fill="#4edea3" r="4" stroke="#0d141e" stroke-width="2">
+                                </circle>
+                                <circle cx="500" cy="50" fill="#8ed5ff" r="4" stroke="#0d141e" stroke-width="2">
+                                </circle>
+                            </svg>
+                            <!-- Dynamic Readout pill in chart -->
+                            <div
+                                class="absolute right-12 top-6 bg-surface-container-high px-2 py-1 rounded shadow-md font-mono-label text-mono-label flex items-center gap-2 pointer-events-none">
+                                <span class="text-primary">Opened: 34</span>
+                                <span class="text-outline">|</span>
+                                <span class="text-secondary font-bold">Merged: 38 (Sprint Peak)</span>
+                            </div>
+                            <!-- Axis X Labels -->
+                            <div class="flex justify-between font-mono-label text-mono-label text-outline pt-1">
+                                <span>Day 1 (May 14)</span>
+                                <span>Day 7</span>
+                                <span>Day 14</span>
+                                <span>Day 21</span>
+                                <span>Day 30 (Today)</span>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center justify-between mt-space-sm pt-space-xs font-mono-label text-mono-label text-outline">
+                            <span class="text-on-surface-variant">Throughput Convergence: <span
+                                    class="text-secondary font-medium">+1.08 ratio (Net clearing backlogs)</span></span>
+                            <span>Baseline Mean: 4.7 PRs/day</span>
+                        </div>
+                    </div>
+                    <!-- CHART 2: PR Lifecycle Time (Line + SLA line) -->
+                    <div class="bg-surface-container-low p-space-lg rounded flex flex-col justify-between shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+                            <div>
+                                <h2
+                                    class="font-headline-md text-headline-md text-on-surface flex items-center gap-space-xs">
+                                    <span class="material-symbols-outlined text-tertiary text-base">timer</span>
+                                    PR Lifecycle Time (Median Time to Merge)
+                                </h2>
+                                <span class="font-body-sm text-body-sm text-on-surface-variant">PR duration from
+                                    creation to merge completion (review queues + CI pipelines)</span>
+                            </div>
+                            <div class="flex items-center gap-space-md font-mono-label text-mono-label">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2.5 h-0.5 bg-tertiary rounded"></span>
+                                    <span class="text-on-surface">Median Time</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2.5 h-0.5 bg-error rounded"></span>
+                                    <span class="text-on-surface">SLA Target (16.0h)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Chart Canvas SVG -->
+                        <div
+                            class="w-full h-64 bg-surface-container-lowest/60 rounded p-space-sm flex flex-col justify-between relative overflow-hidden">
+                            <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 600 200">
+                                <!-- Target Threshold SLA Line at 16h (Y=100) -->
+                                <line stroke="#ffb4ab" stroke-dasharray="6 3" stroke-opacity="0.8" stroke-width="1.5"
+                                    x1="0" x2="600" y1="105" y2="105"></line>
+                                <!-- Actual Lifecycle Curve -->
+                                <polyline fill="none"
+                                    points="0,135 50,130 100,125 150,140 200,120 250,110 300,95 350,90 400,75 450,70 500,82 550,68 600,60"
+                                    stroke="#ffc174" stroke-linecap="round" stroke-width="2.5"></polyline>
+                                <!-- Data Points -->
+                                <circle cx="300" cy="95" fill="#ffc174" r="3"></circle>
+                                <circle cx="450" cy="70" fill="#ffc174" r="3"></circle>
+                                <circle cx="600" cy="60" fill="#ffc174" r="4" stroke="#0d141e" stroke-width="2">
+                                </circle>
+                            </svg>
+                            <!-- Callout Badge -->
+                            <div
+                                class="absolute right-10 top-10 bg-surface-container-high px-2 py-1 rounded shadow-md font-mono-label text-mono-label text-tertiary flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs">arrow_upward</span>
+                                <span>Current: 18.4h (Above Target)</span>
+                            </div>
+                            <!-- Axis X Labels -->
+                            <div class="flex justify-between font-mono-label text-mono-label text-outline pt-1">
+                                <span>Day 1 (14.2h)</span>
+                                <span>Day 7</span>
+                                <span>Day 14 (15.5h)</span>
+                                <span>Day 21 (17.2h)</span>
+                                <span>Day 30 (18.4h)</span>
+                            </div>
+                        </div>
+                        <!-- Explicit SRE Non-Attribution Disclaimer -->
+                        <div
+                            class="flex items-center gap-2 mt-space-sm pt-space-xs font-mono-label text-mono-label text-outline bg-surface-container-high/40 px-2 py-1 rounded">
+                            <span class="material-symbols-outlined text-xs text-outline shrink-0">shield</span>
+                            <span class="truncate">PR lifecycle time measures workflow and review cycle latency; does
+                                not represent developer working time.</span>
+                        </div>
+                    </div>
+                    <!-- CHART 3: CI Reliability & Pipeline Success (Dual line) -->
+                    <div class="bg-surface-container-low p-space-lg rounded flex flex-col justify-between shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+                            <div>
+                                <h2
+                                    class="font-headline-md text-headline-md text-on-surface flex items-center gap-space-xs">
+                                    <span class="material-symbols-outlined text-secondary text-base">verified</span>
+                                    CI Reliability &amp; Pipeline Success
+                                </h2>
+                                <span class="font-body-sm text-body-sm text-on-surface-variant">Success rate vs failure
+                                    rate across automated test and build workflows</span>
+                            </div>
+                            <div class="flex items-center gap-space-md font-mono-label text-mono-label">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2.5 h-0.5 bg-secondary rounded"></span>
+                                    <span class="text-on-surface">Success (95.2%)</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2.5 h-0.5 bg-error rounded"></span>
+                                    <span class="text-on-surface">Failure (4.8%)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Chart Canvas SVG -->
+                        <div
+                            class="w-full h-64 bg-surface-container-lowest/60 rounded p-space-sm flex flex-col justify-between relative overflow-hidden">
+                            <svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 600 200">
+                                <!-- 100% Top reference -->
+                                <line stroke="#3e484f" stroke-dasharray="2 4" stroke-width="1" x1="0" x2="600" y1="20"
+                                    y2="20"></line>
+                                <!-- Success Line (~94-96% range -> Y 25-45) -->
+                                <polyline fill="none"
+                                    points="0,48 50,45 100,50 150,40 200,42 250,38 300,44 350,35 400,32 450,36 500,28 550,30 600,26"
+                                    stroke="#4edea3" stroke-linecap="round" stroke-width="2.5"></polyline>
+                                <!-- Failure Line (~4-6% range -> Y 150-175) -->
+                                <polyline fill="none"
+                                    points="0,152 50,155 100,150 150,160 200,158 250,162 300,156 350,165 400,168 450,164 500,172 550,170 600,174"
+                                    stroke="#ffb4ab" stroke-linecap="round" stroke-width="2"></polyline>
+                                <!-- Shaded baseline -->
+                                <polygon fill="#ffb4ab" fill-opacity="0.08"
+                                    points="0,174 50,170 100,165 150,160 200,158 250,162 300,156 350,165 400,168 450,164 500,172 550,170 600,174 600,195 0,195">
+                                </polygon>
+                            </svg>
+                            <div class="flex justify-between font-mono-label text-mono-label text-outline pt-1">
+                                <span>Day 1 (94.1% SR)</span>
+                                <span>Day 7</span>
+                                <span>Day 14 (94.8% SR)</span>
+                                <span>Day 21</span>
+                                <span>Day 30 (95.2% SR)</span>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center justify-between mt-space-sm pt-space-xs font-mono-label text-mono-label text-outline">
+                            <span class="text-on-surface-variant">Cluster MTTR (Mean Recovery Time): <span
+                                    class="text-secondary font-medium">11.4 mins</span></span>
+                            <span>Total Evaluated Runs: 1,842</span>
+                        </div>
+                    </div>
+                    <!-- CHART 4: Workflow Health & Failure Concentration (Horizontal Bars) -->
+                    <div class="bg-surface-container-low p-space-lg rounded flex flex-col justify-between shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
+                            <div>
+                                <h2
+                                    class="font-headline-md text-headline-md text-on-surface flex items-center gap-space-xs">
+                                    <span class="material-symbols-outlined text-primary text-base">density_medium</span>
+                                    Workflow Health &amp; Failure Concentration
+                                </h2>
+                                <span class="font-body-sm text-body-sm text-on-surface-variant">Most failure-prone CI
+                                    workflows ranked by failure rate over 30d</span>
+                            </div>
+                            <span class="font-mono-label text-mono-label text-outline">Top 5 Analyzed</span>
+                        </div>
+                        <!-- Horizontal Stacked Workflows -->
+                        <div
+                            class="w-full h-64 bg-surface-container-lowest/60 rounded p-space-md flex flex-col justify-around">
+                            <!-- Workflow 1 -->
+                            <div class="flex flex-col gap-1">
+                                <div class="flex items-center justify-between font-mono-label text-mono-label">
+                                    <span class="text-on-surface font-semibold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                                        integration-tests-e2e
+                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-outline">482 runs</span>
+                                        <span class="px-1.5 py-0.5 rounded bg-error/20 text-error font-bold">11.4%
+                                            fail</span>
+                                    </div>
+                                </div>
+                                <div class="w-full h-2 rounded bg-surface-container-highest overflow-hidden flex">
+                                    <div class="h-full bg-error" style="width: 11.4%;"></div>
+                                    <div class="h-full bg-secondary-container" style="width: 88.6%;"></div>
+                                </div>
+                            </div>
+                            <!-- Workflow 2 -->
+                            <div class="flex flex-col gap-1">
+                                <div class="flex items-center justify-between font-mono-label text-mono-label">
+                                    <span class="text-on-surface font-semibold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                                        docker-build-matrix
+                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-outline">612 runs</span>
+                                        <span class="px-1.5 py-0.5 rounded bg-tertiary/20 text-tertiary font-bold">7.8%
+                                            fail</span>
+                                    </div>
+                                </div>
+                                <div class="w-full h-2 rounded bg-surface-container-highest overflow-hidden flex">
+                                    <div class="h-full bg-tertiary" style="width: 7.8%;"></div>
+                                    <div class="h-full bg-secondary-container" style="width: 92.2%;"></div>
+                                </div>
+                            </div>
+                            <!-- Workflow 3 -->
+                            <div class="flex flex-col gap-1">
+                                <div class="flex items-center justify-between font-mono-label text-mono-label">
+                                    <span class="text-on-surface font-semibold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                                        database-migration-dryrun
+                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-outline">189 runs</span>
+                                        <span class="px-1.5 py-0.5 rounded bg-tertiary/20 text-tertiary font-bold">6.2%
+                                            fail</span>
+                                    </div>
+                                </div>
+                                <div class="w-full h-2 rounded bg-surface-container-highest overflow-hidden flex">
+                                    <div class="h-full bg-tertiary" style="width: 6.2%;"></div>
+                                    <div class="h-full bg-secondary-container" style="width: 93.8%;"></div>
+                                </div>
+                            </div>
+                            <!-- Workflow 4 -->
+                            <div class="flex flex-col gap-1">
+                                <div class="flex items-center justify-between font-mono-label text-mono-label">
+                                    <span class="text-on-surface font-semibold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                        unit-and-lint-shard-3
+                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-outline">1,204 runs</span>
+                                        <span
+                                            class="px-1.5 py-0.5 rounded bg-secondary/15 text-secondary font-bold">2.1%
+                                            fail</span>
+                                    </div>
+                                </div>
+                                <div class="w-full h-2 rounded bg-surface-container-highest overflow-hidden flex">
+                                    <div class="h-full bg-secondary" style="width: 2.1%;"></div>
+                                    <div class="h-full bg-secondary-container" style="width: 97.9%;"></div>
+                                </div>
+                            </div>
+                            <!-- Workflow 5 -->
+                            <div class="flex flex-col gap-1">
+                                <div class="flex items-center justify-between font-mono-label text-mono-label">
+                                    <span class="text-on-surface font-semibold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                        helm-chart-linter
+                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-outline">355 runs</span>
+                                        <span
+                                            class="px-1.5 py-0.5 rounded bg-secondary/15 text-secondary font-bold">0.8%
+                                            fail</span>
+                                    </div>
+                                </div>
+                                <div class="w-full h-2 rounded bg-surface-container-highest overflow-hidden flex">
+                                    <div class="h-full bg-secondary" style="width: 0.8%;"></div>
+                                    <div class="h-full bg-secondary-container" style="width: 99.2%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center justify-between mt-space-sm pt-space-xs font-mono-label text-mono-label text-outline">
+                            <span class="text-on-surface-variant">Pipeline Flakiness Index: <span
+                                    class="text-on-surface font-medium">1.4% (Healthy tier)</span></span>
+                            <span>Runner Pool: 64 Concurrency</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- INSIGHT PANEL: "Engineering Signals" -->
+                <div class="flex flex-col gap-space-md">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-space-sm">
+                            <span class="material-symbols-outlined text-primary text-xl">radar</span>
+                            <div>
+                                <h3 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Engineering
+                                    Signals</h3>
+                                <span class="font-body-sm text-body-sm text-on-surface-variant">Automated statistical
+                                    observations across team delivery pipelines and CI runners (30d window)</span>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center gap-space-xs font-mono-label text-mono-label bg-surface-container-high px-space-sm py-1 rounded">
+                            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                            <span class="text-on-surface font-semibold">4 Active Signals Synthesized</span>
+                        </div>
+                    </div>
+                    <!-- 4 High-Fidelity Signal Cards with Semantic Accents -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+                        <!-- Signal 1: Warning (Amber Accent) -->
+                        <div
+                            class="bg-surface-container-low p-space-md rounded flex items-start gap-space-md relative overflow-hidden group hover:bg-surface-container transition-colors shadow-sm">
+                            <div class="w-1 absolute left-0 top-0 bottom-0 bg-tertiary"></div>
+                            <div
+                                class="w-8 h-8 rounded bg-tertiary/15 text-tertiary flex items-center justify-center shrink-0 mt-0.5">
+                                <span class="material-symbols-outlined text-base">hourglass_top</span>
+                            </div>
+                            <div class="flex flex-col gap-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="font-mono-label text-mono-label px-1 py-0.5 rounded bg-tertiary/20 text-tertiary font-bold uppercase">Queue
+                                        Bottleneck</span>
+                                    <span class="font-mono-label text-mono-label text-outline">Confidence 94%</span>
+                                </div>
+                                <p class="font-body-md text-body-md text-on-surface font-medium leading-snug">
+                                    Median PR lifecycle time has increased from <code
+                                        class="font-mono-body text-mono-body text-tertiary">14.2h</code> to <code
+                                        class="font-mono-body text-mono-body text-tertiary">18.4h</code> (+29.6%).
+                                </p>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    Review wait queue lag accounts for 68% of the aggregate delay rather than CI test
+                                    pipeline duration. Team batch review rhythms recommended.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Signal 2: Failure Spike (Red Accent) -->
+                        <div
+                            class="bg-surface-container-low p-space-md rounded flex items-start gap-space-md relative overflow-hidden group hover:bg-surface-container transition-colors shadow-sm">
+                            <div class="w-1 absolute left-0 top-0 bottom-0 bg-error"></div>
+                            <div
+                                class="w-8 h-8 rounded bg-error/15 text-error flex items-center justify-center shrink-0 mt-0.5">
+                                <span class="material-symbols-outlined text-base">error_outline</span>
+                            </div>
+                            <div class="flex flex-col gap-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="font-mono-label text-mono-label px-1 py-0.5 rounded bg-error/20 text-error font-bold uppercase">Cluster
+                                        Instability</span>
+                                    <span class="font-mono-label text-mono-label text-outline">Severity High</span>
+                                </div>
+                                <p class="font-body-md text-body-md text-on-surface font-medium leading-snug">
+                                    CI failure rate increased 8% over the previous 30 days. Most recent failures are
+                                    heavily concentrated in <code
+                                        class="font-mono-body text-mono-body text-primary">integration-tests-e2e</code>.
+                                </p>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    Failure traces isolate socket timeout spikes on Redis cluster mocks running inside
+                                    ephemeral Kubernetes runner nodes.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Signal 3: Efficiency Gain (Green Accent) -->
+                        <div
+                            class="bg-surface-container-low p-space-md rounded flex items-start gap-space-md relative overflow-hidden group hover:bg-surface-container transition-colors shadow-sm">
+                            <div class="w-1 absolute left-0 top-0 bottom-0 bg-secondary"></div>
+                            <div
+                                class="w-8 h-8 rounded bg-secondary/15 text-secondary flex items-center justify-center shrink-0 mt-0.5">
+                                <span class="material-symbols-outlined text-base">speed</span>
+                            </div>
+                            <div class="flex flex-col gap-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="font-mono-label text-mono-label px-1 py-0.5 rounded bg-secondary/20 text-secondary font-bold uppercase">Efficiency
+                                        Gain</span>
+                                    <span class="font-mono-label text-mono-label text-outline">Verified</span>
+                                </div>
+                                <p class="font-body-md text-body-md text-on-surface font-medium leading-snug">
+                                    Build failure rate dropped to <code
+                                        class="font-mono-body text-mono-body text-secondary">4.8%</code> (-1.1%), driven
+                                    by enhanced Docker layer caching on Ubuntu runner pools.
+                                </p>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    Runner execution step time decreased by an average of 4.1 minutes per workflow
+                                    invocation across base branches.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Signal 4: Release Advisory (Blue Accent) -->
+                        <div
+                            class="bg-surface-container-low p-space-md rounded flex items-start gap-space-md relative overflow-hidden group hover:bg-surface-container transition-colors shadow-sm">
+                            <div class="w-1 absolute left-0 top-0 bottom-0 bg-primary"></div>
+                            <div
+                                class="w-8 h-8 rounded bg-primary/15 text-primary flex items-center justify-center shrink-0 mt-0.5">
+                                <span class="material-symbols-outlined text-base">rule</span>
+                            </div>
+                            <div class="flex flex-col gap-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="font-mono-label text-mono-label px-1 py-0.5 rounded bg-primary/20 text-primary font-bold uppercase">Release
+                                        Advisory</span>
+                                    <span class="font-mono-label text-mono-label text-outline">v2.4.0 Tracking</span>
+                                </div>
+                                <p class="font-body-md text-body-md text-on-surface font-medium leading-snug">
+                                    Release Readiness is currently at <code
+                                        class="font-mono-body text-mono-body text-primary">92%</code>. Candidate <code
+                                        class="font-mono-body text-mono-body text-primary-fixed">v2.4.0-rc3</code> is
+                                    passing 4 of 5 automated gate verification checks.
+                                </p>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                    Sole remaining gating blocker: End-to-end telemetry canary soak test currently
+                                    running in staging cluster (78% elapsed).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
