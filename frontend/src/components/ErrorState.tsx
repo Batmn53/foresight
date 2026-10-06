@@ -1,5 +1,4 @@
 import React from 'react';
-import { AlertCircle } from 'lucide-react';
 
 interface ErrorStateProps {
   title?: string;
@@ -8,21 +7,28 @@ interface ErrorStateProps {
 }
 
 export const ErrorState: React.FC<ErrorStateProps> = ({
-  title = 'Failed to load data',
+  title = 'Failed to load telemetry data',
   message = 'An unexpected error occurred while communicating with the ForgeSight API.',
   onRetry,
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center p-8 border border-red-800/40 bg-red-950/20 rounded-xl text-center">
-      <AlertCircle className="h-10 w-10 text-red-400 mb-3" />
-      <h3 className="text-base font-semibold text-red-200">{title}</h3>
-      <p className="text-sm text-red-300/80 max-w-md mt-1 mb-4">{message}</p>
+    <div className="flex flex-col items-center justify-center p-12 bg-surface-container-low rounded border border-error/30 text-center relative overflow-hidden">
+      <div className="w-1 absolute left-0 top-0 bottom-0 bg-error" />
+      <div className="w-10 h-10 rounded bg-error/15 text-error flex items-center justify-center mb-3">
+        <span className="material-symbols-outlined text-xl">error_outline</span>
+      </div>
+      <h3 className="font-headline-md text-headline-md text-on-surface">{title}</h3>
+      <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md mt-1.5 mb-5">
+        {message}
+      </p>
       {onRetry && (
         <button
+          type="button"
           onClick={onRetry}
-          className="px-4 py-2 text-sm font-medium bg-red-800/60 hover:bg-red-700/80 text-white rounded-lg transition"
+          className="flex items-center gap-1.5 px-space-sm py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-mono-label text-mono-label font-semibold border border-outline-variant/40 transition-colors"
         >
-          Try Again
+          <span className="material-symbols-outlined text-sm">refresh</span>
+          <span>Retry Request</span>
         </button>
       )}
     </div>
